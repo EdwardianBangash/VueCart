@@ -45,6 +45,7 @@
       </div>
     </div>
   </div>
+  <div class="cart-wrapper" v-else>NO ITEM FOUND IN CART</div>
 </template>
 
 <script>
