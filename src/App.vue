@@ -24,6 +24,7 @@
       <h1>Cart Items</h1>
       <h4>Total Quantity: {{ totalCartProducts }}</h4>
     </div>
+    <h4>Total Price: {{ totalPrice }}</h4>
     <div class="card" v-for="p in cartProducts" :key="p.id">
       <div class="card-content">
         <img
@@ -35,12 +36,12 @@
         <h3>{{ p.product.title }}</h3>
         <p>{{ p.product.description }}</p>
         <div class="cart-footer">
-          <button class="add-to-cart" @click="removeFromCart(p.id)">
+          <button class="add-to-cart" @click="removeFromCart(p)">
             Remove Item
           </button>
           <h4>Qty: {{ p.product.qty }}</h4>
         </div>
-        <h4>Total: {{ p.product.totalPrice}}</h4> 
+        <h4>Total: {{ p.product.totalPrice }}</h4>
       </div>
     </div>
   </div>
@@ -242,8 +243,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['cartProducts']),
+    ...mapGetters(["cartProducts"]),
     ...mapGetters(["totalCartProducts"]),
+    ...mapGetters(["totalPrice"]),
   },
   methods: {
     addToCart(product) {
@@ -256,7 +258,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 h1 {
   text-align: center;
 }
@@ -295,10 +303,23 @@ div.card {
 .cart-footer {
   display: flex;
   justify-content: space-between;
-  height: 30px;
+  height: 40px;
+  margin-bottom: 10px;
 }
 
 h4 {
   align-self: center;
+}
+
+p {
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+h3 {
+  margin-top: 10px;
 }
 </style>

@@ -6,7 +6,7 @@ const store = createStore({
     return {
       products: [],
       totalProducts: 0,
-      totalPrice: null,
+      totalPrice: 0,
     };
   },
   getters: {
@@ -63,24 +63,28 @@ const store = createStore({
         (item) => (state.totalProducts += item.product.qty)
       );
     },
-    totalPrice(state, payload) {
-      state.totalPrice = payload;
+    totalPrice(state) {
+      state.totalPrice = 0;
+      state.products.filter(
+        (item) => (state.totalPrice += item.product.totalPrice)
+      );
     },
     removeProduct(state, payload) {
-      state.products = state.products.filter((item) => item.id != payload.id);
+      state.products = state.products.filter(
+        (item) => item.product.id != payload.product.id
+      );
     },
   },
   actions: {
     addProduct(context, payload) {
       context.commit("addProduct", payload);
       context.commit("totalProducts");
-    },
-    totalPrice(context, payload) {
-      context.commit("totalPrice", payload);
+      context.commit("totalPrice");
     },
     removeProduct(context, payload) {
       context.commit("removeProduct", payload);
       context.commit("totalProducts");
+      context.commit("totalPrice");
     },
   },
 });
