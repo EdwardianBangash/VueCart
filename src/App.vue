@@ -19,28 +19,28 @@
     </div>
   </div>
 
-  <div class="cart-wrapper" v-if="getCartProducts">
+  <div class="cart-wrapper" v-if="cartProducts.length > 0">
     <div class="cart-content">
       <h1>Cart Items</h1>
-      <h4>Total: {{ totalCartProducts }}</h4>
+      <h4>Total Quantity: {{ totalCartProducts }}</h4>
     </div>
-    <div class="card" v-for="product in cartProducts" :key="product.id">
+    <div class="card" v-for="p in cartProducts" :key="p.id">
       <div class="card-content">
         <img
-          :src="product.thumbnail"
-          :alt="product.description"
+          :src="p.product.thumbnail"
+          :alt="p.product.description"
           height="100"
           width="100"
         />
-        <h3>{{ product.title }}</h3>
-        <p>{{ product.description }}</p>
+        <h3>{{ p.product.title }}</h3>
+        <p>{{ p.product.description }}</p>
         <div class="cart-footer">
-          <button class="add-to-cart" @click="removeFromCart(product)">
+          <button class="add-to-cart" @click="removeFromCart(p.id)">
             Remove Item
           </button>
-          <h4>Total: {{ total(product.id) }}</h4>
+          <h4>Qty: {{ p.product.qty }}</h4>
         </div>
-        <h4>Total: {{ total(product.id) * product.price}}</h4>
+        <h4>Total: {{ p.product.totalPrice}}</h4> 
       </div>
     </div>
   </div>
@@ -239,23 +239,13 @@ export default {
           ],
         },
       ],
-      cartProducts: [],
     };
   },
   computed: {
-    getCartProducts() {
-      return (this.cartProducts = this.$store.state.products.filter(
-        (value, index, self) => {
-          return self.indexOf(value) === index;
-        }
-      ));
-    },
+    ...mapGetters(['cartProducts']),
     ...mapGetters(["totalCartProducts"]),
   },
   methods: {
-    total(id) {
-      return this.$store.state.products.filter((item) => item.id === id).length;
-    },
     addToCart(product) {
       this.$store.dispatch("addProduct", product);
     },
@@ -308,7 +298,7 @@ div.card {
   height: 30px;
 }
 
-h4{
+h4 {
   align-self: center;
 }
 </style>
